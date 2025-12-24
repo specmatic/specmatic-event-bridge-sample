@@ -1,0 +1,17 @@
+version: 2
+contracts:
+  - provides:
+      - specs:
+          - spec/order-events-async-api.yaml
+        specType: asyncapi
+        config:
+          servers:
+            - host: http://localhost:4566
+              protocol: eventbridge
+              adminCredentials:
+                region: us-east-1
+                aws.access.key.id: test
+                aws.secret.access.key: test
+            - host: localhost:9092
+              protocol: kafka
+

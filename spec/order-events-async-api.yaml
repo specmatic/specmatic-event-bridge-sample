@@ -1,0 +1,235 @@
+asyncapi: 3.0.0
+info:
+  title: Order Service EventBridge-Kafka API
+  version: 1.0.0
+  description: |
+    When a message is published on AWS EventBridge, it is processed and published 
+    to specific Kafka topics based on the event type.
+    - place-order-event → place-order Kafka topic
+    - cancel-order-event → cancel-order Kafka topic
+
+servers:
+  eventBridgeServer:
+    host: 'localhost:4566'
+    protocol: http
+    description: AWS EventBridge server (LocalStack) for receiving order events
+  kafkaServer:
+    host: 'localhost:9092'
+    protocol: kafka
+    description: Kafka broker to which processed messages are sent
+
+channels:
+  orderEventsBus:
+    address: order-events-bus
+    servers:
+      - $ref: '#/servers/eventBridgeServer'
+    messages:
+      placeOrderEvent:
+        $ref: '#/components/messages/PlaceOrderEvent'
+      cancelOrderEvent:
+        $ref: '#/components/messages/CancelOrderEvent'
+    description: EventBridge bus where order events are published
+
+  placeOrderTopic:
+    address: place-order
+    servers:
+      - $ref: '#/servers/kafkaServer'
+    messages:
+      placeOrderProcessed:
+        $ref: '#/components/messages/PlaceOrderProcessedMessage'
+    description: Kafka topic where processed place-order events are published
+
+  cancelOrderTopic:
+    address: cancel-order
+    servers:
+      - $ref: '#/servers/kafkaServer'
+    messages:
+      cancelOrderProcessed:
+        $ref: '#/components/messages/CancelOrderProcessedMessage'
+    description: Kafka topic where processed cancel-order events are published
+
+operations:
+  receivePlaceOrderEvent:
+    description: Receive a place-order event from EventBridge and publish the processed message to the place-order Kafka topic
+    action: receive
+    channel:
+      $ref: '#/channels/orderEventsBus'
+    messages:
+      - $ref: '#/components/messages/PlaceOrderEvent'
+    reply:
+      channel:
+        $ref: '#/channels/placeOrderTopic'
+      messages:
+        - $ref: '#/components/messages/PlaceOrderProcessedMessage'
+
+  receiveCancelOrderEvent:
+    description: Receive a cancel-order event from EventBridge and publish the processed message to the cancel-order Kafka topic
+    action: receive
+    channel:
+      $ref: '#/channels/orderEventsBus'
+    messages:
+      - $ref: '#/components/messages/CancelOrderEvent'
+    reply:
+      channel:
+        $ref: '#/channels/cancelOrderTopic'
+      messages:
+        - $ref: '#/components/messages/CancelOrderProcessedMessage'
+
+components:
+  schemas:
+    EventBridgeHeaders:
+      type: object
+      properties:
+        detail-type:
+          type: string
+          description: EventBridge detail type for routing
+        source:
+          type: string
+          description: Source of the event
+          examples:
+            - order-service
+
+    OrderItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: Product identifier
+          examples:
+            - PROD-1
+        quantity:
+          type: integer
+          description: Quantity of the product
+          minimum: 1
+          examples:
+            - 2
+        price:
+          type: number
+          format: double
+          description: Price per unit
+          minimum: 0
+          examples:
+            - 29.99
+      required:
+        - productId
+        - quantity
+        - price
+
+    PlaceOrderEventPayload:
+      type: object
+      properties:
+        eventType:
+          type: string
+          description: Type of the event
+          const: place-order-event
+          examples:
+            - place-order-event
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when event was created
+          examples:
+            - '2025-12-24T10:00:00Z'
+        orderId:
+          type: string
+          description: Unique identifier for the order
+          examples:
+            - ORD-001
+        customerId:
+          type: string
+          description: Customer identifier
+          examples:
+            - CUST-123
+        items:
+          type: array
+          description: List of items in the order
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        totalAmount:
+          type: number
+          format: double
+          description: Total order amount
+          minimum: 0
+          examples:
+            - 109.97
+      required:
+        - eventType
+        - timestamp
+        - orderId
+        - customerId
+        - items
+        - totalAmount
+
+    CancelOrderEventPayload:
+      type: object
+      properties:
+        eventType:
+          type: string
+          description: Type of the event
+          const: cancel-order-event
+          examples:
+            - cancel-order-event
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when event was created
+          examples:
+            - '2025-12-24T10:05:00Z'
+        orderId:
+          type: string
+          description: Unique identifier for the order being cancelled
+          examples:
+            - ORD-001
+        customerId:
+          type: string
+          description: Customer identifier
+          examples:
+            - CUST-123
+        reason:
+          type: string
+          description: Reason for cancellation
+          examples:
+            - Customer requested cancellation
+      required:
+        - eventType
+        - timestamp
+        - orderId
+        - customerId
+        - reason
+
+  messages:
+    PlaceOrderEvent:
+      name: PlaceOrderEvent
+      title: Place Order Event
+      summary: Event triggered when a new order is placed
+      contentType: application/json
+      headers:
+        $ref: '#/components/schemas/EventBridgeHeaders'
+      payload:
+        $ref: '#/components/schemas/PlaceOrderEventPayload'
+
+    CancelOrderEvent:
+      name: CancelOrderEvent
+      title: Cancel Order Event
+      summary: Event triggered when an order is cancelled
+      contentType: application/json
+      headers:
+        $ref: '#/components/schemas/EventBridgeHeaders'
+      payload:
+        $ref: '#/components/schemas/CancelOrderEventPayload'
+
+    PlaceOrderProcessedMessage:
+      name: PlaceOrderProcessedMessage
+      title: Processed Place Order Message
+      summary: Processed place-order event published to Kafka
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PlaceOrderEventPayload'
+
+    CancelOrderProcessedMessage:
+      name: CancelOrderProcessedMessage
+      title: Processed Cancel Order Message
+      summary: Processed cancel-order event published to Kafka
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CancelOrderEventPayload'

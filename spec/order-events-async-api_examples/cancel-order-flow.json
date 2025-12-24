@@ -1,0 +1,28 @@
+{
+  "name": "Standard_CancelOrder_EventBridge_Kafka",
+  "receive": {
+    "topic": "order-events-bus",
+    "payload": {
+      "eventType": "cancel-order-event",
+      "timestamp": "2025-12-24T10:05:00Z",
+      "orderId": "ORD-001",
+      "customerId": "CUST-123",
+      "reason": "Customer requested cancellation"
+    },
+    "headers": {
+      "detail-type": "cancel-order-event",
+      "source": "order-service"
+    }
+  },
+  "send": {
+    "topic": "cancel-order",
+    "payload": {
+      "eventType": "cancel-order-event",
+      "timestamp": "2025-12-24T10:05:00Z",
+      "orderId": "ORD-001",
+      "customerId": "CUST-123",
+      "reason": "Customer requested cancellation"
+    }
+  }
+}
+

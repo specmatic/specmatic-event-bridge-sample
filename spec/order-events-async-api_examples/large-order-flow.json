@@ -1,0 +1,62 @@
+{
+  "name": "LargeOrder_PlaceOrder_EventBridge_Kafka",
+  "receive": {
+    "topic": "order-events-bus",
+    "payload": {
+      "eventType": "place-order-event",
+      "timestamp": "2025-12-24T14:30:00Z",
+      "orderId": "ORD-90001",
+      "customerId": "CUST-44556",
+      "items": [
+        {
+          "productId": "PROD-111",
+          "quantity": 1,
+          "price": 899.99
+        },
+        {
+          "productId": "PROD-222",
+          "quantity": 2,
+          "price": 129.50
+        },
+        {
+          "productId": "PROD-333",
+          "quantity": 3,
+          "price": 45.00
+        }
+      ],
+      "totalAmount": 1293.99
+    },
+    "headers": {
+      "detail-type": "place-order-event",
+      "source": "order-service"
+    }
+  },
+  "send": {
+    "topic": "place-order",
+    "payload": {
+      "eventType": "place-order-event",
+      "timestamp": "2025-12-24T14:30:00Z",
+      "orderId": "ORD-90001",
+      "customerId": "CUST-44556",
+      "items": [
+        {
+          "productId": "PROD-111",
+          "quantity": 1,
+          "price": 899.99
+        },
+        {
+          "productId": "PROD-222",
+          "quantity": 2,
+          "price": 129.50
+        },
+        {
+          "productId": "PROD-333",
+          "quantity": 3,
+          "price": 45.00
+        }
+      ],
+      "totalAmount": 1293.99
+    }
+  }
+}
+
