@@ -34,7 +34,6 @@
   "send": {
     "topic": "place-order",
     "payload": {
-      "eventType": "place-order-event",
       "timestamp": "2025-12-24T14:30:00Z",
       "orderId": "ORD-90001",
       "customerId": "CUST-44556",

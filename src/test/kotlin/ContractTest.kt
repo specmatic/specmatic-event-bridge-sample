@@ -24,8 +24,6 @@ class ContractTest {
         fun isNonCIOrLinux(): Boolean = System.getenv("CI") != "true" || System.getProperty("os.name").lowercase().contains("linux")
 
         private val DOCKER_COMPOSE_FILE = File("docker-compose.yml")
-        private const val LOCALSTACK_SERVICE = "localstack"
-        private const val KAFKA_SERVICE = "kafka"
 
         private lateinit var infrastructure: ComposeContainer
         private lateinit var application: ApplicationTestRunner
@@ -37,19 +35,14 @@ class ContractTest {
 
             // Start infrastructure using docker-compose
             infrastructure = ComposeContainer(DOCKER_COMPOSE_FILE)
-                .withExposedService(LOCALSTACK_SERVICE, 4566, Wait.forListeningPort())
-                .withExposedService(KAFKA_SERVICE, 9092, Wait.forListeningPort())
-                .waitingFor(KAFKA_SERVICE, Wait.forLogMessage(".*started.*", 1)
-                    .withStartupTimeout(Duration.ofSeconds(90)))
-                .waitingFor(LOCALSTACK_SERVICE, Wait.forHealthcheck()
-                    .withStartupTimeout(Duration.ofSeconds(60)))
+                .withLocalCompose(true)
 
             infrastructure.start()
 
             println("Infrastructure started via docker-compose")
 
-            // Wait for LocalStack to be fully ready
-            Thread.sleep(10000)
+            // Wait for services to be fully ready
+            Thread.sleep(20000)
 
             // Initialize AWS resources (EventBridge, SQS)
             ApplicationTestRunner.initializeAwsResources()

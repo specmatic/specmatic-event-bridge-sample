@@ -17,7 +17,6 @@
   "send": {
     "topic": "cancel-order",
     "payload": {
-      "eventType": "cancel-order-event",
       "timestamp": "2025-12-24T10:05:00Z",
       "orderId": "ORD-001",
       "customerId": "CUST-123",

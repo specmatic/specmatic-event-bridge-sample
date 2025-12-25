@@ -1,7 +1,6 @@
 services:
   # LocalStack for AWS services (EventBridge, SQS)
   localstack:
-    container_name: localstack
     image: localstack/localstack:latest
     ports:
       - "4566:4566"            # LocalStack Gateway
@@ -29,7 +28,6 @@ services:
   # Zookeeper for Kafka
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.3
-    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -41,7 +39,6 @@ services:
   # Kafka broker
   kafka:
     image: confluentinc/cp-kafka:7.5.3
-    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -71,7 +68,6 @@ services:
   # Kafka UI for monitoring
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
     depends_on:
       - kafka
     ports:

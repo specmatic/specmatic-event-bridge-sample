@@ -10,8 +10,8 @@ info:
 
 servers:
   eventBridgeServer:
-    host: 'localhost:4566'
-    protocol: http
+    host: 'http://localhost:4566'
+    protocol: eventbridge
     description: AWS EventBridge server (LocalStack) for receiving order events
   kafkaServer:
     host: 'localhost:9092'
@@ -55,12 +55,12 @@ operations:
     channel:
       $ref: '#/channels/orderEventsBus'
     messages:
-      - $ref: '#/components/messages/PlaceOrderEvent'
+      - $ref: '#/channels/orderEventsBus/messages/placeOrderEvent'
     reply:
       channel:
         $ref: '#/channels/placeOrderTopic'
       messages:
-        - $ref: '#/components/messages/PlaceOrderProcessedMessage'
+        - $ref: '#/channels/placeOrderTopic/messages/placeOrderProcessed'
 
   receiveCancelOrderEvent:
     description: Receive a cancel-order event from EventBridge and publish the processed message to the cancel-order Kafka topic
@@ -68,12 +68,12 @@ operations:
     channel:
       $ref: '#/channels/orderEventsBus'
     messages:
-      - $ref: '#/components/messages/CancelOrderEvent'
+      - $ref: '#/channels/orderEventsBus/messages/cancelOrderEvent'
     reply:
       channel:
         $ref: '#/channels/cancelOrderTopic'
       messages:
-        - $ref: '#/components/messages/CancelOrderProcessedMessage'
+        - $ref: '#/channels/cancelOrderTopic/messages/cancelOrderProcessed'
 
 components:
   schemas:
@@ -153,7 +153,6 @@ components:
           examples:
             - 109.97
       required:
-        - eventType
         - timestamp
         - orderId
         - customerId
@@ -191,7 +190,6 @@ components:
           examples:
             - Customer requested cancellation
       required:
-        - eventType
         - timestamp
         - orderId
         - customerId
