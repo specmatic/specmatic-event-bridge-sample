@@ -77,7 +77,7 @@ class ContractTest {
         println("Starting Specmatic contract tests...")
 
         // Setup Specmatic container with host network mode
-        val specmaticContainer = GenericContainer(DockerImageName.parse("specmatic/specmatic-async-core:latest"))
+        val specmaticContainer = GenericContainer(DockerImageName.parse("specmatic/specmatic-async:latest"))
             .withCommand("test")
             .withFileSystemBind(
                 "./specmatic.yaml",

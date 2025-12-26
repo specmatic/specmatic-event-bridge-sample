@@ -3,7 +3,7 @@ contracts:
   - provides:
       - specs:
           - spec/order-events-async-api.yaml
-        specType: ASYNCAPI
+        specType: asyncapi
         config:
           servers:
             - host: http://localhost:4566
