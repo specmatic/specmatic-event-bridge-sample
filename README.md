@@ -19,34 +19,19 @@ The application consists of:
 - Java 17 or higher
 - Gradle (included via wrapper)
 
-**⚠️ IMPORTANT: Before starting, make sure Docker Desktop is running!**
 
 ## Running Contract Tests using Specmatic Async
 
-Run the contract tests using -
+Run the contract tests using
 ```shell
 ./gradlew clean test
 ```
 
-This will run the ContractTest written in `src/test/resources/ContractTest.kt` which makes use of specmatic-async to run the contract tests for this application which implements the asyncapi specification located at `spec/order-events-async-api.yaml`.
+This will run the ContractTest written in `src/test/resources/ContractTest.kt`. 
 
+The contract test uses of specmatic-async which makes use of the asyncapi specification located at `spec/order-events-async-api.yaml` to generate and run the tests.
 
-### Check Prerequisites
-
-Run this script to verify all prerequisites are met:
-
-```bash
-chmod +x check-prerequisites.sh
-./check-prerequisites.sh
-```
-
-This will check:
-- Docker installation and daemon status
-- Docker Compose availability
-- Java version
-- Required ports availability
-
-## Setup and Running
+## Running the Application
 
 ### ⚡ Quick Commands Using make
 
