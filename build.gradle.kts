@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
@@ -51,6 +53,15 @@ application {
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+        events(
+            TestLogEvent.STARTED,
+            TestLogEvent.PASSED,
+            TestLogEvent.FAILED,
+            TestLogEvent.SKIPPED
+        )
+    }
 }
 
 kotlin {
