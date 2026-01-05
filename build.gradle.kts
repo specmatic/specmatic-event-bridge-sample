@@ -25,7 +25,7 @@ dependencies {
     testImplementation("org.testcontainers:kafka:1.19.3")
 
     // AssertJ for assertions
-    testImplementation("org.assertj:assertj-core:3.24.2")
+    testImplementation("org.assertj:assertj-core:3.27.6")
 
     // AWS SDK for EventBridge
     implementation("aws.sdk.kotlin:eventbridge:1.3.90")
