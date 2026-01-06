@@ -16,7 +16,7 @@ dependencies {
     testImplementation(kotlin("test"))
 
     // JUnit 5
-    testImplementation("org.junit.jupiter:junit-jupiter:5.14.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.14.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Testcontainers
