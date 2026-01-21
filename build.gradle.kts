@@ -36,7 +36,7 @@ dependencies {
     implementation("org.apache.kafka:kafka-clients:3.9.1")
 
     // JSON serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:1.5.25")
