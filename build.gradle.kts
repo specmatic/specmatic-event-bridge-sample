@@ -28,7 +28,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.27.7")
 
     // AWS SDK for EventBridge
-    implementation("aws.sdk.kotlin:eventbridge:1.6.9")
+    implementation("aws.sdk.kotlin:eventbridge:1.6.10")
     implementation("aws.sdk.kotlin:sqs:1.6.9")
     implementation("aws.smithy.kotlin:http-client-engine-okhttp:1.6.1")
 
