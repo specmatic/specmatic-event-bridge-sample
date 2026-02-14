@@ -39,7 +39,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:1.5.29")
+    implementation("ch.qos.logback:logback-classic:1.5.30")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
     // Coroutines
