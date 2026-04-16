@@ -33,7 +33,7 @@ dependencies {
     implementation("aws.smithy.kotlin:http-client-engine-okhttp:1.6.10")
 
     // Kafka client
-    implementation("org.apache.kafka:kafka-clients:3.9.2")
+    implementation("org.apache.kafka:kafka-clients:4.2.0")
 
     // JSON serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
