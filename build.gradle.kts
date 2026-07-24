@@ -29,7 +29,7 @@ dependencies {
 
     // AWS SDK for EventBridge
     implementation("aws.sdk.kotlin:eventbridge:1.8.9")
-    implementation("aws.sdk.kotlin:sqs:1.8.4")
+    implementation("aws.sdk.kotlin:sqs:1.8.13")
     implementation("aws.smithy.kotlin:http-client-engine-okhttp:1.7.2")
 
     // Kafka client
